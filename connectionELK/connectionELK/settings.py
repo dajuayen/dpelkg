@@ -25,7 +25,7 @@ SECRET_KEY = '!8k34+s+4ytbp#^pa(y-vu(8juc*a-yc$yurg^ykl9lqlpk!s5'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost']
+ALLOWED_HOSTS = ['localhost', ' 127.0.0.1']
 
 
 # Application definition
@@ -86,26 +86,26 @@ LOGGING = {
             'tags': ['django.request'], # list of tags. Default: None.
         },
     },
+    # 'loggers': {
+    #     'django.request': {
+    #         'handlers': ['logstash'],
+    #         'level': 'ERROR',
+    #         'propagate': True,
+    #     },
     'loggers': {
+        'django': {
+            'handlers': ['logstash'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
         'django.request': {
             'handlers': ['logstash'],
-            'level': 'ERROR',
+            'level': 'DEBUG',
             'propagate': True,
+        },
     },
-    # 'loggers': {
-        # 'django': {
-        #     'handlers': ['logstash'],
-        #     'level': 'DEBUG',
-        #     'propagate': True,
-        # },
-        # 'django.request': {
-        #     'handlers': ['logstash'],
-        #     'level': 'DEBUG',
-        #     'propagate': True,
-        # },
-    },
-}
 
+}
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
