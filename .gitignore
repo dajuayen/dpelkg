@@ -1,0 +1,13 @@
+# Ignore all src directories except private and files with a dot
+env*
+
+# Compiled formats, cache, temporary files, git garbage
+**.~
+**.mo
+**.py[co]
+**.egg-info
+**.orig
+
+# Editor garbage folders
+.vscode
+.idea/
