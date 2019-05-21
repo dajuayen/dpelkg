@@ -76,14 +76,14 @@ LOGGING = {
     'disable_existing_loggers': False,
     'handlers': {
         'logstash': {
-            'level': 'ERROR',
+            'level': 'INFO',
             'class': 'logstash.TCPLogstashHandler',
             'host': 'localhost',
-            'port': 5959, # Default value: 5959
+            'port': 5000, # Default value: 5959
             'version': 1, # Version of logstash event schema. Default value: 0 (for backward compatibility of the library)
-            'message_type': 'django',  # 'type' field in logstash message. Default value: 'logstash'.
-            'fqdn': False, # Fully qualified domain name. Default value: false.
-            'tags': ['django.request'], # list of tags. Default: None.
+            'message_type': 'logstash',  # 'type' field in logstash message. Default value: 'logstash'.
+            'fqdn': True, # Fully qualified domain name. Default value: false.
+            'tags': ['polls'], # list of tags. Default: None.
         },
     },
     # 'loggers': {
@@ -95,14 +95,18 @@ LOGGING = {
     'loggers': {
         'django': {
             'handlers': ['logstash'],
-            'level': 'DEBUG',
+            'level': 'INFO',
             'propagate': True,
         },
         'django.request': {
             'handlers': ['logstash'],
-            'level': 'DEBUG',
+            'level': 'INFO',
             'propagate': True,
         },
+        'polls': {
+            'handlers': ['logstash'],
+            'level': 'INFO',
+        }
     },
 
 }
@@ -112,9 +116,9 @@ LOGGING = {
 
 DATABASES = {
     'default': {
-        'NAME': 'elk',
+        'NAME': 'elk2',
         'ENGINE': 'django.db.backends.postgresql',
-        'USER': 'elk',
+        'USER': 'elk2',
         'PASSWORD': 'admin',
         'HOST': '127.0.0.1',
         'PORT': '5432',
