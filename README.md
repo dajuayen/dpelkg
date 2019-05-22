@@ -1,2 +1,2 @@
 # dpelkg
-Django + postgres + elasticsearch + logstash + kibana + grafana 
+Django + postgres + Fluentd + grafana 

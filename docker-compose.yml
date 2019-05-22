@@ -1,0 +1,42 @@
+version: '2'
+
+services:
+
+  grafana:
+    build:
+      context: grafana/
+      args:
+        GRAFANA_VERSION: $GRAFANA_VERSION
+    container_name: grafana
+    user: "1000:1000"
+    volumes:
+      - ./volumes/grafana-storage:/var/lib/grafana:z
+      # - ./volumes/elasticsearch/storage:/usr/share/elasticsearch/data:ro
+    ports:
+      - "30000:3000"
+    environment:
+      ES_JAVA_OPTS: "-Xmx256m -Xms256m"
+      ELASTIC_PASSWORD: changeme
+    networks:
+      - default
+
+  db:
+    image: postgres:${DB_VERSION}-alpine
+    environment:
+        POSTGRES_USER: "$DB_USER"
+        POSTGRES_PASSWORD: "$DB_PASSWORD"
+        POSTGRES_DB: "$DB_NAME"
+    volumes:
+        - db:/var/lib/postgresql/data:z
+    ports:
+        - "127.0.0.1:5555:5432"
+    networks:
+      - default # postgres datasource grafana
+
+# networks:
+#   gra:
+#     driver: default
+
+
+volumes:
+  db:

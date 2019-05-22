@@ -1,0 +1,6 @@
+# HOSTNAME: DAVID-GF
+# GF_SERVER_ROOT_URL: http://grafana
+GF_SECURITY_ADMIN_PASSWORD: admin
+GF_INSTALL_PLUGINS: grafana-clock-panel,grafana-simple-json-datasource
+GF_SERVER_DOMAIN: grafana.docker.local
+GF_SERVER_ROOT_URL: http://grafana.docker.local/
