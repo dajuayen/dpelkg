@@ -1,5 +1,7 @@
 # Ignore all src directories except private and files with a dot
 env*
+venv*
+volume*
 
 # Compiled formats, cache, temporary files, git garbage
 **.~

@@ -1,0 +1,26 @@
+version: '2.2'
+services:
+
+  elk:
+    image: sebp/elk
+    ports:
+      - "5601:5601"
+      - "9200:9200"
+      - "5044:5044"
+    volumes: 
+      - ./volumes/elk-data:/var/lib/elasticsearch
+      # - ./volumes/logstash/:/etc/logstash/conf.d:z
+
+  db:
+    image: postgres:${DB_VERSION}-alpine
+    environment:
+        POSTGRES_USER: "$DB_USER"
+        POSTGRES_PASSWORD: "$DB_PASSWORD"
+        POSTGRES_DB: "$DB_NAME"
+    volumes:
+        - db:/var/lib/postgresql/data:z
+    ports:
+        - "127.0.0.1:5432:5432"
+
+volumes:
+  db:
