@@ -1,0 +1,82 @@
+version: '2.2'
+services:
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.0.1
+    container_name: es01
+    environment:
+      - node.name=es01
+      - discovery.seed_hosts=es02
+      - cluster.initial_master_nodes=es01,es02
+      - cluster.name=docker-cluster
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - esdata01:/usr/share/elasticsearch/data
+    ports:
+      - "127.0.0.1:9200:9200"
+    networks:
+      - esnet
+  elasticsearch2:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.0.1
+    container_name: es02
+    environment:
+      - node.name=es02
+      - discovery.seed_hosts=es01
+      - cluster.initial_master_nodes=es01,es02
+      - cluster.name=docker-cluster
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - esdata02:/usr/share/elasticsearch/data
+    networks:
+      - esnet
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.0.1
+    container_name: kibana01
+    ports:
+      - "127.0.0.1:5601:5601"
+    environment:
+      SERVER_NAME: kibana
+      ELASTICSEARCH_HOSTS: "http://elasticsearch:9200"
+      ELASTICSEARCH_URL: http://elasticsearch:9200
+      # LOGGING_VERBOSE: true
+      # ELASTICSEARCH_LOGQUERIES: true
+      LOGGING_TIMEZONE: Europe/Madrid
+      I18N_LOCALE: es_ES
+    networks:
+      - esnet
+    depends_on:
+      - elasticsearch
+    links:
+      - elasticsearch
+  logstash:
+    # https://www.elastic.co/guide/en/beats/filebeat/7.0/filebeat-getting-started.html
+    image: docker.elastic.co/logstash/logstash:7.0.1
+    container_name: logstash01
+    ports:
+      - "5959:5959"
+    environment:
+      ELASTICSEARCH_HOSTS: "http://172.18.0.3:9200"
+      XPATH_MONITORING_ELASTICSEARCH_HOSTS: "http://172.18.0.3:9200"
+    networks:
+      - esnet
+    depends_on:
+      - elasticsearch
+    links:
+      - elasticsearch
+volumes:
+  esdata01:
+    driver: local
+  esdata02:
+    driver: local
+
+networks:
+  esnet:
